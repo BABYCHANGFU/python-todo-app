@@ -1,10 +1,14 @@
+import json
+
 class TodoList:
     def __init__(self):
         self.tasks = []
+        self.load_tasks()
 
     def add_task(self, task):
         self.tasks.append(task)
         print(f"Task added: {task}")
+        self.save_tasks()
 
     def view_tasks(self):
         if not self.tasks:
@@ -12,6 +16,17 @@ class TodoList:
         else:
             for i, task in enumerate(self.tasks, 1):
                 print(f"{i}. {task}")
+
+    def save_tasks(self):
+        with open("tasks.json", "w") as f:
+            json.dump(self.tasks, f)
+
+    def load_tasks(self):
+        try:
+            with open("tasks.json", "r") as f:
+                self.tasks = json.load(f)
+        except FileNotFoundError:
+            self.tasks = []
 
 def main():
     todo_list = TodoList()
